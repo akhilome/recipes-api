@@ -37,5 +37,17 @@ app.post('/recipes/add', async (req, res) => {
   }
 });
 
+app.delete('/recipes/:id', async (req, res) => {
+  const { id } = req.params;
+  const text = 'DELETE FROM recipes WHERE id=($1)';
+
+  try {
+    await pool.query(text, [id]);
+    res.status(204).json();
+  } catch (err) {
+    res.status(400).json({err});
+  }
+});
+
 // Setup Server Port
 app.listen(3000, () => console.log('app running on 3000'));
