@@ -25,5 +25,17 @@ app.get('/recipes', async (req, res) => {
   }
 });
 
+app.post('/recipes/add', async (req, res) => {
+  const { name, ingredients, directions } = req.body;
+  const text = 'INSERT INTO recipes(name, ingredients, directions) VALUES ($1, $2, $3) RETURNING *';
+
+  try {
+    const result = await pool.query(text, [name, ingredients, directions]);
+    res.json({ recipe: result.rows });
+  } catch (err) {
+    res.status(400).json({err});
+  }
+});
+
 // Setup Server Port
 app.listen(3000, () => console.log('app running on 3000'));
