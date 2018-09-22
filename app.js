@@ -49,5 +49,18 @@ app.delete('/recipes/:id', async (req, res) => {
   }
 });
 
+app.put('/recipes/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, ingredients, directions } = req.body;
+  const text = 'UPDATE recipes SET name=$1, ingredients=$2, directions=$3 WHERE id=$4 RETURNING *';
+  try {
+    const existingRecipe = (await pool.query('SELECT * FROM recipes WHERE id=$1', [id])).rows[0];
+    const updatedRecipe = (await pool.query(text, [name || existingRecipe.name, ingredients || existingRecipe.ingredients, directions || existingRecipe.directions, id])).rows[0];
+    res.json({ updatedRecipe });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
 // Setup Server Port
 app.listen(3000, () => console.log('app running on 3000'));
