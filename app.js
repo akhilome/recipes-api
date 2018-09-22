@@ -1,14 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
-const pgPassword = require('./secrets');
+const dotenv = require('dotenv');
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'recipebookdb',
-  password: pgPassword
-});
+dotenv.config();
+
+const pool = new Pool({ connectionString: process.env.DB_URL });
 
 const app = express();
 
