@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "export NODE_ENV=test && mocha tests/**/*.spec.js --exit",
+    "test": "export NODE_ENV=test && nyc mocha tests/**/*.spec.js --exit",
     "dev": "nodemon app.js",
     "test-watch": "nodemon --exec 'npm test'"
   },
@@ -23,10 +23,12 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-http": "^4.2.0",
+    "coveralls": "^3.0.2",
     "dirty-chai": "^2.0.1",
     "eslint": "^5.6.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1"
   }
 }
