@@ -10,6 +10,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const text = 'SELECT * FROM recipes WHERE id=$1';
+    const recipe = await pool.query(text, [id]);
+
+    if (!recipe.rowCount) {
+      res.status(404).json({
+        status: 'error',
+        message: 'No recipe with that id exists',
+      });
+    }
+
+    res.json({
+      status: 'success',
+      recipe: recipe.rows[0],
+    });
+  } catch (err) {
+    res.status(400).json();
+  }
+});
+
 router.post('/add', async (req, res) => {
   const { name, ingredients, directions } = req.body;
   const text = 'INSERT INTO recipes(name, ingredients, directions) VALUES ($1, $2, $3) RETURNING *';
