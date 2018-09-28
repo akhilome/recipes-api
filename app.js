@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Recipes
-app.use('/api/v1/recipes', recipeRouter);
+app.use('/api/v1/', recipeRouter);
 
 // Setup Server Port
 app.listen(3000);
