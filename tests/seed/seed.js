@@ -17,7 +17,7 @@ const seedData = {
 
 const populateTables = async () => {
   const dropTableQuery = 'DROP TABLE IF EXISTS recipes';
-  const createTableQuery = 'CREATE TABLE recipes(id SERIAL PRIMARY KEY, name VARCHAR(255),ingredients TEXT,directions TEXT)';
+  const createTableQuery = 'CREATE TABLE recipes(id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL,ingredients TEXT NOT NULL, directions TEXT NOT NULL)';
   const insertRecipeQuery = 'INSERT INTO recipes(name, ingredients, directions) VALUES($1, $2, $3)';
   await pool.query(dropTableQuery);
   await pool.query(createTableQuery);
