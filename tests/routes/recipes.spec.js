@@ -109,3 +109,44 @@ describe('DELETE /recipes/:id', () => {
       });
   });
 });
+
+describe('POST /recipes', () => {
+  const data = {
+    complete: {
+      name: 'new recipe',
+      ingredients: 'recipe ingredients',
+      directions: 'how to prepare meal with this recipe',
+    },
+    incomplete: {
+      name: 'recipe 2',
+      directions: 'no ingredients',
+    },
+  };
+
+  it('should successfully add new recipe to db on provision of complete data', (done) => {
+    chai.request(app)
+      .post('/api/v1/recipes')
+      .send(data.complete)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(201);
+        res.body.should.be.an('object').which.has.keys(['message', 'recipe']);
+        res.body.recipe[0].should.eql({ id: 3, ...data.complete });
+        done();
+      });
+  });
+
+  it('should respond with a 400 if data is incomplete', (done) => {
+    chai.request(app)
+      .post('/api/v1/recipes')
+      .send(data.incomplete)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.have.keys(['error']);
+        done();
+      });
+  });
+});

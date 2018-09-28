@@ -38,9 +38,12 @@ class RecipeController {
 
     try {
       const result = await pool.query(text, [name, ingredients, directions]);
-      res.json({ recipe: result.rows });
+      res.status(201).json({
+        message: 'recipe added successfully',
+        recipe: result.rows,
+      });
     } catch (err) {
-      res.status(400).json({ err });
+      res.status(400).json({ error: err });
     }
   }
 
