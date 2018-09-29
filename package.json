@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "preinstall": "npm run purge-db",
-    "start": "node app.js",
-    "test": "export NODE_ENV=test && nyc --reporter=lcov mocha tests/**/*.spec.js --exit",
-    "dev": "nodemon app.js",
+    "start": "npm run build && node ./dist/app.js",
+    "test": "export NODE_ENV=test && nyc --reporter=lcov mocha --require babel-register tests/**/*.spec.js --exit",
+    "build": "babel ./server -d dist",
+    "dev": "nodemon --exec babel-node ./server/app.js",
     "test-watch": "nodemon --exec 'npm test'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "purge-db": "echo 'DROP DATABASE IF EXISTS recipebook;' | psql -U postgres && echo 'CREATE DATABASE recipebook;' | psql -U postgres",
@@ -25,6 +26,9 @@
     "pg": "^7.4.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.2",
     "chai-http": "^4.2.0",
     "coveralls": "^3.0.2",

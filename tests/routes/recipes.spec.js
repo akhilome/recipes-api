@@ -2,9 +2,9 @@ const chai = require('chai');
 require('chai/register-should');
 const chaiHttp = require('chai-http');
 const dirtyChai = require('dirty-chai');
-const pool = require('../../db/config');
+const pool = require('../../server/db/config');
 
-const app = require('./../../app.js');
+const app = require('../../server/app.js');
 const { seedData, populateTables } = require('../seed/seed');
 
 const validId = Math.ceil(Math.random() * seedData.recipes.length);
@@ -161,7 +161,7 @@ describe('PUT /recipes/:id', () => {
 
         res.status.should.eql(200);
         res.body.should.be.an('object');
-        
+
         try {
           const updatedRecipe = (await pool.query('SELECT * FROM recipes WHERE id=$1', [validId])).rows[0];
           updatedRecipe.should.eql({ id: validId, ...data.complete });
@@ -181,7 +181,7 @@ describe('PUT /recipes/:id', () => {
 
         res.status.should.eql(200);
         res.body.should.be.an('object');
-        
+
         try {
           const updatedRecipe = (await pool.query('SELECT * FROM recipes WHERE id=$1', [validId])).rows[0];
           updatedRecipe.name.should.eql(data.incomplete.name);
