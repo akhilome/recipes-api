@@ -1,9 +1,11 @@
-const dotenv = require('dotenv');
-const { Pool } = require('pg');
+import dotenv from 'dotenv';
+import { Pool } from 'pg';
 
 dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
+
+/* eslint-disable */
 let pool;
 
 if (env === 'test') {
@@ -12,4 +14,4 @@ if (env === 'test') {
   pool = new Pool({ connectionString: process.env.DB_URL });
 }
 
-module.exports = pool;
+export default pool;

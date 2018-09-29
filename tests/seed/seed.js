@@ -1,4 +1,4 @@
-const pool = require('../../server/db/config');
+import pool from '../../server/db/config';
 
 const seedData = {
   recipes: [
@@ -31,4 +31,4 @@ const populateTables = async () => {
   );
 };
 
-module.exports = { seedData, populateTables };
+export { seedData, populateTables };

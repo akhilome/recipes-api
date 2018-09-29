@@ -1,4 +1,4 @@
-const pool = require('../db/config');
+import pool from '../db/config';
 
 class RecipeController {
   static async getAllRecipes(req, res) {
@@ -79,4 +79,4 @@ class RecipeController {
   }
 }
 
-module.exports = RecipeController;
+export default RecipeController;

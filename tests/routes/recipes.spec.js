@@ -1,11 +1,11 @@
-const chai = require('chai');
-require('chai/register-should');
-const chaiHttp = require('chai-http');
-const dirtyChai = require('dirty-chai');
-const pool = require('../../server/db/config');
+import chai from 'chai';
+import 'chai/register-should';
+import chaiHttp from 'chai-http';
+import dirtyChai from 'dirty-chai';
+import pool from '../../server/db/config';
 
-const app = require('../../server/app.js');
-const { seedData, populateTables } = require('../seed/seed');
+import app from '../../server/app';
+import { seedData, populateTables } from '../seed/seed';
 
 const validId = Math.ceil(Math.random() * seedData.recipes.length);
 const invalidId = seedData.recipes.length + 1;

@@ -1,6 +1,6 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const recipeRouter = require('./routes/recipeRouter');
+import express from 'express';
+import bodyParser from 'body-parser';
+import recipeRouter from './routes/recipeRouter';
 
 const app = express();
 
@@ -14,4 +14,4 @@ app.use('/api/v1/', recipeRouter);
 // Setup Server Port
 app.listen(3000);
 
-module.exports = app;
+export default app;
