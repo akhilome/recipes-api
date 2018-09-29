@@ -4,11 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "preinstall": "npm run purge-db",
     "start": "node app.js",
     "test": "export NODE_ENV=test && nyc --reporter=lcov mocha tests/**/*.spec.js --exit",
     "dev": "nodemon app.js",
     "test-watch": "nodemon --exec 'npm test'",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "purge-db": "echo 'DROP DATABASE IF EXISTS recipebook;' | psql -U postgres && echo 'CREATE DATABASE recipebook;' | psql -U postgres",
+    "setup-testdb": "echo 'DROP DATABASE IF EXISTS recipebook-test;' | psql -U postgres && echo 'CREATE DATABASE recipebook-test;' | psql -U postgres"
   },
   "keywords": [
     "node-postgres"
