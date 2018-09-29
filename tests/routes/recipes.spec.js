@@ -10,6 +10,18 @@ const { seedData, populateTables } = require('../seed/seed');
 const validId = Math.ceil(Math.random() * seedData.recipes.length);
 const invalidId = seedData.recipes.length + 1;
 
+const data = {
+  complete: {
+    name: 'new recipe',
+    ingredients: 'recipe ingredients',
+    directions: 'how to prepare meal with this recipe',
+  },
+  incomplete: {
+    name: 'recipe 2',
+    directions: 'no ingredients',
+  },
+};
+
 chai.use(chaiHttp);
 chai.use(dirtyChai);
 
@@ -111,18 +123,6 @@ describe('DELETE /recipes/:id', () => {
 });
 
 describe('POST /recipes', () => {
-  const data = {
-    complete: {
-      name: 'new recipe',
-      ingredients: 'recipe ingredients',
-      directions: 'how to prepare meal with this recipe',
-    },
-    incomplete: {
-      name: 'recipe 2',
-      directions: 'no ingredients',
-    },
-  };
-
   it('should successfully add new recipe to db on provision of complete data', (done) => {
     chai.request(app)
       .post('/api/v1/recipes')
@@ -146,6 +146,61 @@ describe('POST /recipes', () => {
 
         res.status.should.eql(400);
         res.body.should.have.keys(['error']);
+        done();
+      });
+  });
+});
+
+describe('PUT /recipes/:id', () => {
+  it('should update existing recipe if complete data is provided', (done) => {
+    chai.request(app)
+      .put(`/api/v1/recipes/${validId}`)
+      .send(data.complete)
+      .end(async (err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(200);
+        res.body.should.be.an('object');
+        
+        try {
+          const updatedRecipe = (await pool.query('SELECT * FROM recipes WHERE id=$1', [validId])).rows[0];
+          updatedRecipe.should.eql({ id: validId, ...data.complete });
+          done();
+        } catch (error) {
+          done(error);
+        }
+      });
+  });
+
+  it('should update existing recipe if incomplete data is provided', (done) => {
+    chai.request(app)
+      .put(`/api/v1/recipes/${validId}`)
+      .send(data.incomplete)
+      .end(async (err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(200);
+        res.body.should.be.an('object');
+        
+        try {
+          const updatedRecipe = (await pool.query('SELECT * FROM recipes WHERE id=$1', [validId])).rows[0];
+          updatedRecipe.name.should.eql(data.incomplete.name);
+          updatedRecipe.directions.should.eql(data.incomplete.directions);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      });
+  });
+
+  it('should respond with a 400 if non-existent recipe id is provided', (done) => {
+    chai.request(app)
+      .put(`/api/v1/recipes/${invalidId}`)
+      .send({})
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
         done();
       });
   });
