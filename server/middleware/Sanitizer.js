@@ -16,11 +16,7 @@ class Sanitize {
         2: 'password',
         3: 'confirm password',
       };
-
-      if (field === undefined) {
-        return keys[index];
-      }
-      return null;
+      return field === undefined ? keys[index] : null;
     }).filter(field => field !== null).join(', ');
 
     if (!name || !email || !password || !confirmPassword) {
