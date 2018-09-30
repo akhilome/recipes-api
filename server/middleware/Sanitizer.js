@@ -38,6 +38,21 @@ class Sanitize {
     req.password = password.trim();
     return next();
   }
+
+  static signin(req, res, next) {
+    const { email, password } = req.body;
+
+    if (!Validator.isEmail(email) || !Validator.isValidPassword(password)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'email or password not correctly password',
+      });
+    }
+
+    req.email = email.trim();
+    req.password = password.trim();
+    return next();
+  }
 }
 
 export default Sanitize;
