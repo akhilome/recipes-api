@@ -42,10 +42,17 @@ class Sanitize {
   static signin(req, res, next) {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'some required fields missing',
+      });
+    }
+
     if (!Validator.isEmail(email) || !Validator.isValidPassword(password)) {
       return res.status(400).json({
         status: 'error',
-        message: 'email or password not correctly password',
+        message: 'email or password not correctly formated',
       });
     }
 
