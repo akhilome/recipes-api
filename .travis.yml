@@ -2,11 +2,10 @@ dist: xenial
 language: node_js
 node_js:
   - "lts/*"
-# sudo: true
 services:
   - postgresql
 addons:
-  postgresql: "10"
+  postgresql: "10.5"
 before_script:
   - psql -c 'create database recipebooktravis;' -U postgres
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
